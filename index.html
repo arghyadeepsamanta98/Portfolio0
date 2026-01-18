@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arghyadeep Samanta | Modern Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        /* --- RESET & BASICS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        :root {
+            --bg-color: #1a2626; 
+            --card-bg: #233030;
+            --accent: #cfa76e;   
+            --text-light: #f4f4f4;
+            --text-dim: #aab6b6;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* --- ANIMATION UTILS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-in-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 10%;
+            background: linear-gradient(135deg, rgba(26,38,38,0.95), rgba(26,38,38,0.8)), url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .hero-text h3 {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            min-height: 4.4rem; 
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: var(--accent);
+            animation: blink 1s infinite;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            color: var(--text-dim);
+        }
+
+        .hero-img-container {
+            position: relative;
+        }
+
+        .hero-img-container::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--accent);
+            z-index: 0;
+        }
+
+        .hero-img {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+            border-radius: 4px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* --- SECTIONS --- */
+        section {
+            padding: 100px 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- PHILOSOPHY --- */
+        .philosophy {
+            text-align: center;
+            background: var(--card-bg);
+            border-left: 5px solid var(--accent);
+        }
+        
+        .quote-box {
+            font-size: 1.6rem;
+            font-style: italic;
+            color: var(--text-light);
+        }
+
+        /* --- EDUCATION --- */
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3.5rem;
+        }
+
+        .timeline-year {
+            flex: 0 0 160px;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-right: 2px solid var(--accent);
+            padding-right: 25px;
+            text-align: right;
+        }
+
+        .timeline-content {
+            padding-left: 25px;
+        }
+
+        /* --- SKILLS --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .skill-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        /* --- PROJECTS --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+        .project-card:hover {
+            border-bottom: 3px solid var(--accent);
+            background: #2a3a3a;
+        }
+
+        .tags span {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: rgba(207, 167, 110, 0.1);
+            color: var(--accent);
+            padding: 5px 10px;
+            margin-right: 8px;
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+
+        /* --- CONTACT & COPYRIGHT --- */
+        .contact-section {
+            text-align: center;
+            background: #151f1f;
+            padding: 100px 10% 50px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* Link Styling */
+        .contact-item a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .contact-item i { color: var(--accent); }
+
+        .copyright-text {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 30px;
+            color: #556666;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-img-container { margin: 40px auto 0; max-width: 320px; }
+            .hero-text p { margin: 0 auto 2rem; }
+            .timeline-item { flex-direction: column; }
+            .timeline-year { text-align: left; border-right: none; border-left: 2px solid var(--accent); padding: 0 0 10px 15px; }
+            .timeline-content { padding-left: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h3>HELLO, I AM</h3>
+                <h1><span id="typing-text"></span><span class="cursor">|</span></h1>
+                <p>A dedicated <strong>Data Scientist</strong> with an M.Tech background, focused on turning complex datasets into intelligent, actionable solutions.</p>
+                <a href="#contact" style="text-decoration: none; color: var(--accent); border: 1px solid var(--accent); padding: 12px 30px; font-weight: bold; display: inline-block;">GET IN TOUCH</a>
+            </div>
+            <div class="hero-img-container reveal">
+                <img src="profile.jpg" alt="Arghyadeep Samanta" class="hero-img">
+            </div>
+        </div>
+    </header>
+
+    <section class="philosophy reveal">
+        <div class="quote-box">
+            "If you don't have any shadows, you're not standing in the light."
+        </div>
+        <div style="color: var(--accent); margin-top: 15px; font-weight: bold; letter-spacing: 2px;">— LIFE PHILOSOPHY</div>
+    </section>
+
+    <section class="reveal">
+        <h2>Most Proud Of</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div class="project-card reveal" style="border-left: 3px solid var(--accent); border-bottom: none;">
+                <h3>Courage</h3>
+                <p>I had the courage to take a sinking ship and try to make it float. I welcome high-stakes challenges that require resilience.</p>
+            </div>
+            <div class="project-card reveal" style="border-left: 3px solid var(--accent); border-bottom: none;">
+                <h3>Persistence & Loyalty</h3>
+                <p>Maintained unwavering dedication through difficult transitions, proving long-term commitment to organizational goals.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <h2>Education</h2>
+        <div class="timeline-item reveal">
+            <div class="timeline-year">2024 - 2026</div>
+            <div class="timeline-content">
+                <h3>M.Tech in Data Science</h3>
+                <p>Maulana Abul Kalam Azad University of Technology (MAKAUT), Nadia</p>
+            </div>
+        </div>
+        <div class="timeline-item reveal">
+            <div class="timeline-year">2022 - 2024</div>
+            <div class="timeline-content">
+                <h3>M.Sc in Data Science</h3>
+                <p>Maulana Abul Kalam Azad University of Technology (MAKAUT), Nadia</p>
+            </div>
+        </div>
+        <div class="timeline-item reveal">
+            <div class="timeline-year">2019 - 2022</div>
+            <div class="timeline-content">
+                <h3>B.Sc in Computer Science</h3>
+                <p>Midnapore College (Autonomous)</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <h2>Technical Expertise</h2>
+        <div class="skills-grid">
+            <div class="skill-card reveal"><i class="fab fa-python"></i><h4>Python</h4></div>
+            <div class="skill-card reveal"><i class="fas fa-brain"></i><h4>Machine Learning</h4></div>
+            <div class="skill-card reveal"><i class="fas fa-database"></i><h4>SQL</h4></div>
+            <div class="skill-card reveal"><i class="fas fa-code"></i><h4>C Language</h4></div>
+            <div class="skill-card reveal"><i class="fas fa-table"></i><h4>Advanced Excel</h4></div>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <h2>Featured Projects</h2>
+        <div class="project-grid">
+            <div class="project-card reveal">
+                <h3>Rainfall Prediction</h3>
+                <p>Utilizing <strong>Support Vector Machines (SVM)</strong> to build high-accuracy forecasting models based on historical climate data.</p>
+                <div class="tags"><span>Python</span> <span>ML</span> <span>SVM</span></div>
+            </div>
+            <div class="project-card reveal">
+                <h3>Crop Detection</h3>
+                <p>An intelligent system designed for agricultural optimization by identifying crop types and health status through data modeling.</p>
+                <div class="tags"><span>Data Science</span> <span>Agriculture</span></div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="contact-section reveal">
+        <h2>Get In Touch</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i> 
+                <a href="mailto:arghyadeepsamanta2025@gmail.com">arghyadeepsamanta2025@gmail.com</a>
+            </div>
+            
+            <div class="contact-item">
+                <i class="fab fa-linkedin"></i> 
+                <a href="https://www.linkedin.com/in/arghyadeep-samanta-a536b2253" target="_blank">LinkedIn Profile</a>
+            </div>
+            
+            <div class="contact-item">
+                <i class="fas fa-phone"></i> 
+                <a href="tel:+918250534099">+91 8250534099</a>
+            </div>
+            
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i> 
+                <a href="https://www.google.com/maps/search/West+Midnapore,+WB,+India" target="_blank">West Midnapore, WB, India</a>
+            </div>
+        </div>
+
+        <div class="copyright-text">
+            <p>&copy; 2026 ARGHYADEEP SAMANTA. ALL RIGHTS RESERVED.</p>
+            <p style="margin-top: 10px; font-size: 0.7rem; opacity: 0.6;">DESIGNED FOR EXCELLENCE IN DATA SCIENCE</p>
+        </div>
+    </footer>
+
+    <script>
+        // TYPING ANIMATION
+        const textToType = "ARGHYADEEP SAMANTA";
+        const textElement = document.getElementById('typing-text');
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < textToType.length) {
+                textElement.textContent += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 120); 
+            }
+        }
+
+        // SCROLL REVEAL (FADE IN/OUT)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        window.onload = () => {
+            type();
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        };
+    </script>
+</body>
+</html>
